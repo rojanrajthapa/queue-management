@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app1'
+    'task1',
+    'task2',
+    'task3',
 ]
 
 MIDDLEWARE = [
@@ -76,11 +78,14 @@ WSGI_APPLICATION = 'proj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bank_transactions',  # Replace 'your_database_name' with your actual database name
+        'USER': 'postgres',  # Replace 'your_database_user' with your actual database username
+        'PASSWORD': 'pwd',  # Replace 'your_database_password' with your actual database password
+        'HOST': 'localhost',  # Or replace with your database host if it's not running locally
+        'PORT': '5432',  # Or replace with your database port if it's not the default PostgreSQL port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -119,3 +124,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# gmail_send/settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'thapa22u@@gmail.com'
+EMAIL_HOST_PASSWORD = 'rdihzlykamjrlcxi'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'thapa22u@gmail.com'
