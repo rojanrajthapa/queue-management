@@ -2,13 +2,13 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from random import choice, randint
-from task3.models import User, Transaction
+from task3.models import User
 from task3.transaction_utils import deposit, save_transaction, withdraw, transfer
 
 class Command(BaseCommand):
     help = 'Runs 50 asynchronous transactions (deposits, withdrawals, transfers)'
 
-    def handle(self, *args, **options):
+    def handle(self):
         with transaction.atomic(): 
             for _ in range(50):
                 operation = choice(['deposit', 'withdraw', 'transfer'])
@@ -29,4 +29,4 @@ class Command(BaseCommand):
                     transfer.delay(from_user.id, to_user.id, amount)
                     save_transaction.delay('TRANSFER', amount, from_user.id, to_user.id)
 
-        self.stdout.write(self.style.SUCCESS('Successfully queued 50 transactions.'))
+      
