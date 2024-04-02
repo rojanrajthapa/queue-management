@@ -34,12 +34,11 @@ def transfer(from_user_id, to_user_id, amount):
 
 def save_transaction(type, amount, sender_id, receiver_id):
 
-    with transaction.atomic():
-        sender = User.objects.get(pk=sender_id)
-        receiver = User.objects.get(pk=receiver_id)
-        Transaction.objects.create(
-            type=type,
-            amount=amount,
-            sender_id=sender,
-            receiver_id=receiver,
-        )
+    sender = User.objects.get(pk=sender_id)
+    receiver = User.objects.get(pk=receiver_id)
+    Transaction.objects.create(
+        type=type,
+        amount=amount,
+        sender_id=sender,
+        receiver_id=receiver,
+    )
