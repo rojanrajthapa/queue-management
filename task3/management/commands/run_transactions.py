@@ -7,6 +7,7 @@ from task3.transaction_utils import deposit, save_transaction, withdraw, transfe
 
 logger = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = 'Runs 50 asynchronous transactions (deposits, withdrawals, transfers)'
 
@@ -30,7 +31,8 @@ class Command(BaseCommand):
                         to_user = choice(User.objects.exclude(pk=from_user.pk))
                         amount = randint(100, 1000)
                         transfer(from_user.id, to_user.id, amount)
-                        save_transaction('TRANSFER', amount, from_user.id, to_user.id)
+                        save_transaction('TRANSFER', amount,
+                                         from_user.id, to_user.id)
             logger.info('All transactions completed successfully.')
         except Exception as e:
             logger.error(f'Error occurred: {e}')
