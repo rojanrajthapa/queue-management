@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+# settings.py
+CELERY_BROKER_URL = 'amqp://localhost'  # RabbitMQ broker URL
+CELERY_RESULT_BACKEND = 'rpc://localhost'  # RabbitMQ result backend URL
+
 
 from pathlib import Path
 
@@ -133,3 +137,20 @@ EMAIL_HOST_PASSWORD = 'rdihzlykamjrlcxi'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'thapa22u@gmail.com'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
