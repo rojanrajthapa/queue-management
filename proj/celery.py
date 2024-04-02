@@ -17,12 +17,12 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
-app.conf.beat_schedule = {
-    'run_transactions_every_30_seconds': {
-        'task': 'task3.tasks.run_transactions',
-        'schedule': timedelta(seconds=30),
-    },
-}
+# app.conf.beat_schedule = {
+#     'run_transactions_every_30_seconds': {
+#         'task': 'task3.tasks.run_transactions',
+#         'schedule': timedelta(seconds=30),
+#     },
+# }
 
 # app.conf.beat_schedule = {
 #     'run_transactions_daily_at_3_15_pm': {
