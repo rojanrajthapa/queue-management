@@ -17,12 +17,12 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
-# app.conf.beat_schedule = {
-#     'run_transactions_every_30_seconds': {
-#         'task': 'task3.tasks.run_transactions',
-#         'schedule': timedelta(seconds=30),
-#     },
-# }
+app.conf.beat_schedule = {
+    'run_transactions_every_30_seconds': {
+        'task': 'task3.tasks.run_transactions',
+        'schedule': timedelta(seconds=10),
+    },
+}
 
 # app.conf.beat_schedule = {
 #     'run_transactions_daily_at_3_15_pm': {
@@ -30,3 +30,7 @@ app.autodiscover_tasks()
 #         'schedule': crontab(hour=15, minute=15),
 #     },
 # }
+
+app.conf.update(
+    worker_concurrency=1  
+)
