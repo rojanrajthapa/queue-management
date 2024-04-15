@@ -10,7 +10,7 @@ services:
       - RABBITMQ_DEFAULT_USER=rojan  # RabbitMQ default username
       - RABBITMQ_DEFAULT_PASS=rojan  # RabbitMQ default password
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq  
+      - rabbitmq_data:/var/lib/rabbitmq  # Persist RabbitMQ data
 
   db:
     image: postgres:latest
@@ -19,33 +19,34 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pwd
     ports:
-      - '5432:5432'  
+      - '5432:5432'  # PostgreSQL port
     volumes:
-      - postgres_data:/var/lib/postgresql/data  
+      - postgres_data:/var/lib/postgresql/data  # Persist PostgreSQL data
 
   celery_worker:
     build:
       context: .
-      dockerfile: Dockerfile.celery  
+      dockerfile: Dockerfile.celery  # Use the Celery Dockerfile
     depends_on:
-      - rabbitmq  
-      - db  
-      - .:/app  
+      - rabbitmq  # Ensure RabbitMQ is started before Celery
+      - db  # Ensure PostgreSQL is started before Celery
+    volumes:
+      - .:/app  # Mount your Django project directory
     environment:
-      - DJANGO_SETTINGS_MODULE=proj.settings  
+      - DJANGO_SETTINGS_MODULE=proj.settings  # Set Django settings module
       - CELERY_BROKER_URL=amqp://rojan:rojan@99.209.28.83:5672// # Celery broker URL
       - CELERY_RESULT_BACKEND=db+postgresql://postgres:pwd@db:5432/bank_transactions  # Celery result backend URL
 
   django:
     build:
       context: .
-      dockerfile: Dockerfile.django  
+      dockerfile: Dockerfile.django  # Use the Django Dockerfile
     ports:
-      - '8000:8000'  
+      - '8000:8000'  # Django development server port
     depends_on:
-      - db  
+      - db  # Ensure PostgreSQL is started before Django
     environment:
-      - DJANGO_SETTINGS_MODULE=proj.settings 
+      - DJANGO_SETTINGS_MODULE=proj.settings  # Set Django settings module
 
 volumes:
   rabbitmq_data:
