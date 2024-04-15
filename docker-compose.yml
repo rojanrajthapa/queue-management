@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5673:5672"  # RabbitMQ port for Celery broker
+      - "15673:15672"  # RabbitMQ management UI port
+    environment:
+      - RABBITMQ_DEFAULT_USER=rojan  # RabbitMQ default username
+      - RABBITMQ_DEFAULT_PASS=rojan  # RabbitMQ default password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: bank_transactions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pwd
+    ports:
+      - '5432:5432'  
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.celery  
+    depends_on:
+      - rabbitmq  
+      - db  
+      - .:/app  
+    environment:
+      - DJANGO_SETTINGS_MODULE=proj.settings  
+      - CELERY_BROKER_URL=amqp://rojan:rojan@99.209.28.83:5672// # Celery broker URL
+      - CELERY_RESULT_BACKEND=db+postgresql://postgres:pwd@db:5432/bank_transactions  # Celery result backend URL
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile.django  
+    ports:
+      - '8000:8000'  
+    depends_on:
+      - db  
+    environment:
+      - DJANGO_SETTINGS_MODULE=proj.settings 
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  postgres_data:
+    driver: local

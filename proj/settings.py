@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 # settings.py
-CELERY_BROKER_URL = 'amqp://localhost'  # RabbitMQ broker URL
-CELERY_RESULT_BACKEND = 'rpc://localhost'  # RabbitMQ result backend URL
+# CELERY_BROKER_URL = 'amqp://localhost'
+
+CELERY_BROKER_URL = 'amqp://rojan:rojan@99.209.28.83:5672//'  # RabbitMQ broker URL
+CELERY_RESULT_BACKEND='db+postgresql://postgres:pwd@db:5432/bank_transactions'
+
 
 
 from pathlib import Path
@@ -29,7 +32,7 @@ SECRET_KEY = 'sqehio$00h@b5$t3!@a*e@opjdync*rx409oemuukramxywqa3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,11 +86,11 @@ WSGI_APPLICATION = 'proj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bank_transactions',  # Replace 'your_database_name' with your actual database name
-        'USER': 'postgres',  # Replace 'your_database_user' with your actual database username
-        'PASSWORD': 'pwd',  # Replace 'your_database_password' with your actual database password
-        'HOST': 'localhost',  # Or replace with your database host if it's not running locally
-        'PORT': '5432',  # Or replace with your database port if it's not the default PostgreSQL port
+        'NAME': 'bank_transactions', 
+        'USER': 'postgres',  
+        'PASSWORD': 'pwd',  
+        'HOST': 'db',  # Change to match the Docker container's network
+        'PORT': '5432',  
     }
 }
 
